@@ -16,6 +16,7 @@ const authUser = asyncHandler(async (req, res) => {
     res.status(200).json({
       _id: user._id,
       username: user.username,
+      isAdmin: user.isAdmin,
     });
   } else {
     res.status(401);
@@ -47,6 +48,7 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(201).json({
       _id: user._id,
       username: user.username,
+      isAdmin: user.isAdmin,
     });
   } else {
     res.status(400);
@@ -76,6 +78,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     res.status(200).json({
       _id: user._id,
       username: user.username,
+      isAdmin: user.isAdmin,
     });
   } else {
     res.status(404);
@@ -101,6 +104,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     res.status(200).json({
       _id: updatedUser._id,
       username: updatedUser.username,
+      isAdmin: updatedUser.isAdmin,
     });
   } else {
     res.status(404);
@@ -135,6 +139,10 @@ const getUserByID = asyncHandler(async (req, res) => {
 const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
   if (user) {
+    if (user.isAdmin) {
+      res.status(400);
+      throw new Error("Cannot delete admin user");
+    }
     await User.deleteOne({ _id: user._id });
     res.status(200).json({ message: "User deleted" });
   } else {
@@ -151,12 +159,14 @@ const updateUser = asyncHandler(async (req, res) => {
 
   if (user) {
     user.username = req.body.username || user.username;
+    user.isAdmin = Boolean(req.body.isAdmin);
 
     const updatedUser = await user.save();
 
     res.status(200).json({
       _id: updatedUser._id,
       username: updatedUser.username,
+      isAdmin: updatedUser.isAdmin,
     });
   } else {
     res.status(404);

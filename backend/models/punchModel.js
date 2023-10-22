@@ -1,5 +1,12 @@
+import mongoose from "mongoose";
+
 const punchSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     punchIn: {
       type: Date,
       required: true,
@@ -7,11 +14,6 @@ const punchSchema = new mongoose.Schema(
     },
     punchOut: {
       type: Date,
-    },
-    username: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
     },
     project: {
       type: mongoose.Schema.Types.ObjectId,

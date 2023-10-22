@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const projectSchema = mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User", // reference to the User model
+    },
     title: {
       type: String,
       required: true,
@@ -12,13 +17,8 @@ const projectSchema = mongoose.Schema(
     },
     image: {
       type: String,
-      required: true,
     },
     github: {
-      type: String,
-      required: true,
-    },
-    demo: {
       type: String,
       required: true,
     },
