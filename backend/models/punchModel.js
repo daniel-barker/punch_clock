@@ -1,26 +1,25 @@
-import express from "express";
-
-const punchSchema = mongoose.Schema(
+const punchSchema = new mongoose.Schema(
   {
     punchIn: {
       type: Date,
       required: true,
+      default: Date.now,
     },
     punchOut: {
       type: Date,
+    },
+    username: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
-    punchDuration: {
-      type: Number,
+    project: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Project",
       required: true,
     },
-    punchType: {
+    note: {
       type: String,
-      required: true,
-    },
-    punchNotes: {
-      type: String,
-      required: true,
     },
   },
   {
